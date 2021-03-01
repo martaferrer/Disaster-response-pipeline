@@ -101,10 +101,6 @@ def main():
               'disaster_messages.csv disaster_categories.csv ' 
               'DisasterResponse.db')
 
-
-    df = load_data('data/messages.csv', 'data/categories.csv')
-    df_cleaned = clean_data(df)
-
 if __name__ == '__main__':
     main()
 
