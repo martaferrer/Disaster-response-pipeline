@@ -61,7 +61,7 @@ def clean_data(df):
     df = df[df.duplicated(subset=['id'], keep='first') == False]
 
     # duplicated messages (?) remove them
-    df = df[df.duplicated(subset=['message'], keep='first') == True]
+    df = df[df.duplicated(subset=['message'], keep='first') == False]
 
     return df
 
@@ -75,6 +75,17 @@ def save_data(df, database_filename):
     '''
     engine = create_engine('sqlite:///' + database_filename)
     df.to_sql(name = 'DisasterDatabase', con=engine, index=False, if_exists='replace')
+
+
+# messages_filepath = 'data\messages.csv'
+# categories_filepath = 'data\categories.csv'
+# database_filepath = 'data\DisasterResponse.db'
+# df = load_data(messages_filepath, categories_filepath)
+# print('Cleaning data...')
+# df = clean_data(df)
+# print('Saving data...\n    DATABASE: {}'.format(database_filepath))
+# save_data(df, database_filepath)
+# print('Cleaned data saved to database!')
 
 def main():
     if len(sys.argv) == 4:
@@ -93,7 +104,7 @@ def main():
 
         print('Cleaned data saved to database!')
 
-    else:
+    #else:
         print('Please provide the filepaths of the messages and categories '
               'datasets as the first and second argument respectively, as ' 
               'well as the filepath of the database to save the cleaned data ' 
