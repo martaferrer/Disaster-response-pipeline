@@ -50,6 +50,7 @@ def clean_data(df):
 
         if (len(df[col_name].unique()) == 1):
             print('column {} is always {}'.format(col_name, df[col_name].unique()))
+            df.drop(columns=col_name, inplace=True)
 
     df.drop(columns='categories', inplace=True)
 
