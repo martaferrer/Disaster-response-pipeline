@@ -15,7 +15,7 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
-from sklearn.externals import joblib
+import joblib
 from sqlalchemy import create_engine
 
 
@@ -33,12 +33,11 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/DisasterResponse.db')
-df = pd.read_sql_table('DisasterDatabase', engine)
+engine = create_engine("sqlite:///../data/DisasterResponse.db")
+df = pd.read_sql_table(table_name="DisasterDatabase", con=engine)
 
 # load model
 model = joblib.load("../models/classifier.pkl")
-
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
@@ -46,13 +45,26 @@ model = joblib.load("../models/classifier.pkl")
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
+    # Graphic 1
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-    
+
+    # Graphic 2
+    df_sub = df.drop(columns=['id', 'message', 'genre'])
+    col = df_sub.columns
+
+    counts_array = []
+    for i in range(0, df_sub.shape[1]):
+        print(col[i], sum(df_sub.iloc[:, i].astype(int)))
+        counts_array.append(sum(df_sub.iloc[:, i].astype(int)))
+    df_counts = pd.DataFrame(index=col, data=counts_array, columns=["categories"]).sort_values(by=["categories"],                                                                                    ascending=False)
+
+    total_counts = df_counts["categories"]
+    total_names = list(df_counts.index)
+
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
+        # Graphic 1
         {
             'data': [
                 Bar(
@@ -68,6 +80,26 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+
+        # Graphic 2
+        {
+            'data': [
+                Bar(
+                    x=total_names,
+                    y=total_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Most frequent categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Categories"
                 }
             }
         }
