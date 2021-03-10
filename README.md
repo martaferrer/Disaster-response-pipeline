@@ -44,7 +44,7 @@ The files in the project follow the structure below:
 * data
   * disaster_categories.csv - input data to process
   * disaster_messages.csv  - input data to process
-  * 'process_data.py'
+  * `process_data.py`
   * `DisasterResponse.db` - output database containing the clean data
 * models
   * `train_classifier.py` - MPL model
@@ -52,7 +52,7 @@ The files in the project follow the structure below:
 *README.md
 
 ## Instructions
-1. Run ETL pipeline: `python process_data.py data/messages.csv data/categories.csv data/DisasterResponse.db`
+1. Run ETL pipeline from the data folder: `python process_data.py messages.csv categories.csv DisasterResponse.db`
 2. Run ML pipeline: `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
 3. Run the web app from the app folder: `python run.py`
 4. Go to: [http://localhost:3001](http://localhost:3001)
